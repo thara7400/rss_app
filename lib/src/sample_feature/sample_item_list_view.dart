@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rss_app/src/sample_feature/sample_item_api.dart';
 import 'package:webfeed/webfeed.dart';
@@ -6,6 +7,7 @@ import 'sample_item.dart';
 import 'sample_item_details_view.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class SampleItemListView extends StatefulWidget {
@@ -30,8 +32,11 @@ class SampleItemListViewState extends State<SampleItemListView> {
 
   // データ取得
   Future<void> getRss() async {
-    feedData = RssApi().getRssData('https://www.theverge.com/rss/index.xml');
-    // feedData = RssApi().getRssData('http://himukamaru.jugem.jp/?mode=atom');
+    if(kIsWeb){
+      feedData = RssApi().getRssData('https://www.theverge.com/rss/index.xml');
+    }else{
+      feedData = RssApi().getRssData('http://himukamaru.jugem.jp/?mode=atom');
+    }
     setState(() {});
   }
 
@@ -75,7 +80,10 @@ class SampleItemListViewState extends State<SampleItemListView> {
 
                     return GestureDetector(
                       onTap: () {
-                         Navigator.push(
+                        if(kIsWeb){
+                          launch('${item.id}');
+                        }else{
+                          Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => SampleItemDetailsView(
@@ -83,6 +91,7 @@ class SampleItemListViewState extends State<SampleItemListView> {
                             ),
                           ),
                         );
+                        }
                       },
                       child: Card(
                         child: Container(

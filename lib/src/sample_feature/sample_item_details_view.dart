@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:easy_web_view2/easy_web_view2.dart';
 
 
 class SampleItemDetailsView extends StatelessWidget {
@@ -21,16 +20,10 @@ class SampleItemDetailsView extends StatelessWidget {
       ),
       body: SafeArea(
         top: false,
-        child: EasyWebView(
-          src: url!,
-          onLoaded: () {
-            print('$key: Loaded: $url');
-          },
+        child: WebView(
+          initialUrl: url,
+          javascriptMode: JavascriptMode.unrestricted,
         ),
-        // child: WebView(
-        //   initialUrl: url,
-        //   javascriptMode: JavascriptMode.unrestricted,
-        // ),
       ),
     );
   }
